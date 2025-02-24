@@ -11,3 +11,6 @@ Diffusion model in mathematic
 - [擴散模型（Diffusion Model）：生成模型的新成員](https://ycc.idv.tw/diffusion-model.html)
 - [What are Diffusion Models?](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
 - []()
+
+Papers to read:
+- https://arxiv.org/pdf/2305.12502

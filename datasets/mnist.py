@@ -2,37 +2,28 @@ from torch.utils.data import Dataset
 from torchvision import datasets
 
 class mnist(Dataset):
-    def __init__(self, root_dir: None, transform):
+    def __init__(self, root_dir: None, transform: None):
         # Local variable
         self.dataset = -1
         self.transform = transform
         
-        # Load dataset
+        # Load dataset (TBD)
         if root_dir is None:
-            self.dataset = datasets.MNIST(
-                root="./data",
-                train=train,
-                download=True,
-                transform=self.transform
-            )
+            self.dataset = ""
         else:
-            self.dataset = datasets.MNIST(
-                root=root_dir,
-                train=train,
-                download=False,
-                transform=self.transform
-            )
-        
-        self.targets = self.dataset.targets
-        
+            self.dataset = ""
         
     def __len__(self):
-        pass
+        return len(self.dataset)
 
     def __getitem__(self, index):
         image, _ = self.dataset[index]
-        label = self.targets[index]
-        return image, label
+        if self.transform:
+            image = self.transform(image)
+        return image
 
     def get_featdim(self):
-        pass
+        sample_image, _ = self.dataset[0]
+        if self.transform:
+            sample_image = self.transform(sample_image)
+        return sample_image.shape

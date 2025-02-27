@@ -1,21 +1,38 @@
 from torch.utils.data import Dataset
-from .base import BaseDataset
+from torchvision import datasets
 
 class mnist(Dataset):
-    def __init__(self, args, names, labels):
-        self.dataset = "true nn.dataset class here"
+    def __init__(self, root_dir: None, transform):
+        # Local variable
+        self.dataset = -1
+        self.transform = transform
         
-        # Process your dataset here
+        # Load dataset
+        if root_dir is None:
+            self.dataset = datasets.MNIST(
+                root="./data",
+                train=train,
+                download=True,
+                transform=self.transform
+            )
+        else:
+            self.dataset = datasets.MNIST(
+                root=root_dir,
+                train=train,
+                download=False,
+                transform=self.transform
+            )
         
-        # Error handling
-        if self.dataset is None:
-            raise ValueError("A dataset instance must be provided to BaseDataset.")
+        self.targets = self.dataset.targets
+        
         
     def __len__(self):
         pass
 
     def __getitem__(self, index):
-        pass
+        image, _ = self.dataset[index]
+        label = self.targets[index]
+        return image, label
 
     def get_featdim(self):
         pass

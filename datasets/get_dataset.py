@@ -4,8 +4,8 @@ Usage: dataset = get_datasets(self.args)
 Ref: Idea is provoke from https://github.com/zeroQiaoba/MERTools/blob/master/MERBench/toolkit/data/__init__.py
 """
 
-from torch.utils.data import Dataset
 from .mnist import mnist
+
 
 def get_datasets(args, transfrom):
     """
@@ -19,5 +19,11 @@ def get_datasets(args, transfrom):
         #"kodak24": Kodak24(),
     }
     
-    dataset = MODEL_DATASET_MAP[args.dataset] # Allow one dataset at a time 
-    return dataset
+    train_set, test_set, eval_set = None, None, None # Initialize
+    train_set, test_set, eval_set = MODEL_DATASET_MAP[args.dataset] # Allow one dataset at a time 
+    
+    # Warning
+    if eval_set is None:
+        raise ValueError("WARNING: evaluation dataset is empty")
+    
+    return train_set, test_set, eval_set

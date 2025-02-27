@@ -5,10 +5,11 @@ class mnist(Dataset):
     def __init__(self, root_dir: None, transform: None):
         # Local variable
         self.dataset = -1
-        self.transform = transform
+        self.root_dir = root_dir # default: None
+        self.transform = transform # default: None
         
         # Load dataset (TBD)
-        if root_dir is None:
+        if self.root_dir is None:
             self.dataset = ""
         else:
             self.dataset = ""

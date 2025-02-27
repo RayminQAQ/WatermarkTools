@@ -12,14 +12,9 @@ def get_datasets(args, transfrom):
     param:
     - transfrom: apply watermark algorithm and reshape image
     """
-    # WATERMARK_MAP = {
-    #    # "algo": ?
-    #}
-    
-    #transfrom = WATERMARK_MAP[arg.watermark] if arg.watermark in WATERMARK_MAP else None
-    
+
     MODEL_DATASET_MAP = {
-        "mnist": mnist(args, root_dir=args.dataset_path, transform=transfrom),
+        "mnist": mnist(root_dir=args.dataset_path, transform=transfrom),
         #"cbsd68": CBSD68(),
         #"kodak24": Kodak24(),
     }

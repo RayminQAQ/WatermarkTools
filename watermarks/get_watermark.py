@@ -1,4 +1,8 @@
-
+"""
+TODO:
+    - Watermark algo-1: DwtDctSvd, RivaGAN, SSL, StableSignature, StegaStamp, TreeRing
+    - Watermark algo-2: add noise for our own
+"""
 
 def get_watermarks(args, dataset):
     
@@ -11,3 +15,7 @@ def get_watermarks(args, dataset):
         raise ValueError("WARNING: get_watermarks() is not use")
         
     return new_dataset
+
+if __name__ == "__main__":
+    # Testing Area
+    pass

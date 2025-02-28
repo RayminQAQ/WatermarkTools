@@ -23,7 +23,11 @@ def get_datasets(args, transfrom):
     train_set, eval_set = MODEL_DATASET_MAP[args.dataset].get_train_dataset, MODEL_DATASET_MAP[args.dataset].get_eval_dataset # Allow one dataset at a time 
     
     # Warning
+    if args.dataset not in MODEL_DATASET_MAP:
+        raise ValueError(f"WARNING: Dataset name _{args.dataset}_ is not support by function get_datasets()")
+        
+    
     if train_set is None or eval_set is None:
-        raise ValueError(f"WARNING: {args.dataset} dataset is empty")
+        raise ValueError(f"WARNING: _{args.dataset}_ dataset is empty. Please checkout for your {args.dataset}'s coding implementation")
     
     return train_set, eval_set

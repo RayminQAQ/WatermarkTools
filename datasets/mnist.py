@@ -11,6 +11,8 @@ class mnist(Dataset):
             transform (callable or None): Transformations to apply to the images.
             is_train (bool): Whether to load the training set (True) or test set (False).
         """
+        super(mnist, self).__init__()
+        
         # Local variable for storing the dataset
         self.dataset = -1  
         self.dataset_path = dataset_path  # Default: None

@@ -1,13 +1,15 @@
 """
 File: get_dataset.py
-Usage: dataset = get_datasets(self.args)
+Usage: dataset = get_datasets(args)
 Ref: Idea is provoke from https://github.com/zeroQiaoba/MERTools/blob/master/MERBench/toolkit/data/__init__.py
 """
 
+from torchvision import transforms
+from torch.utils.data import Dataset
 from .mnist import mnist_interface
 
 
-def get_datasets(args, transfrom):
+def get_datasets(args, transfrom: transforms) -> tuple[Dataset, Dataset]:
     """
     param:
     - transfrom: apply watermark algorithm and reshape image

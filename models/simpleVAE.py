@@ -72,7 +72,7 @@ class SimpleVAE(nn.Module):
         
         x_dec = x_dec.view(-1, *self.sample.shape[1:]) 
         
-        # Advice將輸出壓縮到 [0, 1] 範圍，通常用於重構圖像
+        # Advice: 將輸出壓縮到 [0, 1] 範圍，通常用於重構圖像
         x_dec = torch.sigmoid(x_dec)
         
         return x_dec, mu, logvar

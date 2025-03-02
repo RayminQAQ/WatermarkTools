@@ -1,6 +1,5 @@
 """
-
 Reference:
-- https://github.com/AntixK/PyTorch-VAE/tree/master
+- https://github.com/AntixK/PyTorch-VAE
 
 """

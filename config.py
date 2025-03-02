@@ -12,6 +12,7 @@ def get_config():
     parser.add_argument("--watermark", type=str, default="", help="the name of the watermark algorithm")
     parser.add_argument("--dataset", type=str, default="", help="the name of training / testing dataset")
     parser.add_argument("--dataset_path", type=str, default="", help="the path of args.dataset, it will be automatically download if emptys")
+    parser.add_argument("--model_name_or_path", type=str, default="", help="the model name or its local path")
     
     args = parser.parse_args()
     return args

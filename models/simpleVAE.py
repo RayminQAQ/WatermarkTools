@@ -14,9 +14,10 @@ class SimpleVAE(nn.Module):
         self.sample = sample
         
         # Encoder:
+        SAMPLE_CHANNEL = 3?
         FINIAL_ENCODER_CHANNEL = 32
         self.encoder = nn.Sequential(
-            nn.Conv2d(3, 16, kernel_size=5, padding=2),
+            nn.Conv2d(SAMPLE_CHANNEL, 16, kernel_size=5, padding=2),
             nn.ReLU(),
             nn.Conv2d(16, FINIAL_ENCODER_CHANNEL, kernel_size=3, padding=1),
             nn.ReLU(),
@@ -24,7 +25,7 @@ class SimpleVAE(nn.Module):
         
         # Latent: projection # Q: how to convert into embed_dim?
         
-        encoder_out_dim = FINIAL_ENCODER_CHANNEL * sample.shape[2] * sample.shape[3] # similar to: - * math.prod(sample.shape[2:])
+        encoder_out_dim = FINIAL_ENCODER_CHANNEL * sample.size(2) * sample.size(3) # similar to: - * math.prod(sample.shape[2:])
         self.proj_embed = nn.Linear(encoder_out_dim, embed_dim) 
         #print(f"encoder_out_dim: {encoder_out_dim}") # debug
         

@@ -19,7 +19,8 @@ class mnist(Dataset):
         self.transform = transform  # Default: None
         
         # Load dataset, automatically saves the file into the default location if dataset_path is not provided.
-        if self.dataset_path is None:
+        
+        if self.dataset_path is None or self.dataset_path == "":
             # If no dataset path is specified, download and store MNIST in "./data"
             self.dataset = datasets.MNIST(root="./data", train=is_train, download=True)
         else:

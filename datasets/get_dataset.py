@@ -9,7 +9,7 @@ from torch.utils.data import Dataset
 from .mnist import mnist_interface
 
 
-def get_datasets(args, transfrom: transforms) -> tuple[Dataset, Dataset]:
+def get_datasets(args, transfrom: transforms | None) -> tuple[Dataset, Dataset]:
     """
     param:
     - transfrom: apply watermark algorithm and reshape image

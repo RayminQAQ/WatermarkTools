@@ -1,5 +1,6 @@
 from torch.utils.data import Dataset
 from torchvision import datasets
+import torchvision.transforms as transforms
 
 class mnist(Dataset):
     def __init__(self, dataset_path=None, transform=None, is_train=True):
@@ -19,7 +20,6 @@ class mnist(Dataset):
         self.transform = transform  # Default: None
         
         # Load dataset, automatically saves the file into the default location if dataset_path is not provided.
-        
         if self.dataset_path is None or self.dataset_path == "":
             # If no dataset path is specified, download and store MNIST in "./data"
             self.dataset = datasets.MNIST(root="./data", train=is_train, download=True)
@@ -83,6 +83,10 @@ class mnist_interface:
         # Store dataset path, defaulting to None if not provided
         self.dataset_path = dataset_path if dataset_path is not None else None
         self.transform = transform  # Store the transformation function
+        if self.transform is None:
+            self.transform = transforms.Compose([
+                transforms.ToTensor()
+            ])
 
     def get_train_dataset(self):
         """

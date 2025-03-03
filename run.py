@@ -7,20 +7,21 @@ from models.get_model import get_models
 # Testing dependency
 import torch
 
-def train():
+def train_or_eval():
     pass
 
 def run():
     config = get_config()
     
-    # 
+    # Transform
     transform = transforms.Compose([
-        transforms.ToTensor()
+        transforms.ToTensor(),
     ])
     
+    # TBD: more dataset collections
     train_set, eval_set = get_datasets(args=config, transfrom=transform)
 
-    # TBD: fix the bug of get_featdim()
+    # TBD: more models collections & dynamic support for tensor shape
     sample = train_set.get_feat()
     model = get_models(args=config, sample=sample)
     

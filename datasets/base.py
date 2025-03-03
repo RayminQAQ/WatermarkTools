@@ -66,6 +66,18 @@ class BaseDataset(Dataset):
 
         return data
 
+    def get_feat(self):
+        """
+        Returns the image features.
+
+        Returns:
+            torch.tensor: A sample image after transformation (e.g., (1, 28, 28) for grayscale images).
+        """
+        sample_image, _ = self.dataset[0]  # Retrieve the first image
+        if self.transform:
+            sample_image = self.transform(sample_image)  # Apply transformation if provided
+        return sample_image  # Return the shape of the transformed image       
+
     def get_featdim(self):
         """
         Returns the feature dimension of a sample.

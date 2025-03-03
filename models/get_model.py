@@ -18,7 +18,7 @@ def get_models(args, sample: torch.tensor) -> torch.nn.Module:
 
     # Note: the parameter may varies
     MODEL_MAP = {
-        "SimpleVAE": SimpleVAE(sample=sample, embed_dim=512, latent_dim=256), 
+        "SimpleVAE": SimpleVAE(sample=sample, embed_dim=512, latent_dim=128), 
         
         # TBD ...
         

@@ -7,14 +7,20 @@ class SimpleVAE(nn.Module):
         super(SimpleVAE, self).__init__()
         """
         Parameter settings:
-            - Sample: (batch, channels=3, height, width)
-            - latent_dim: integer
+        __init__
+            - Sample: (batch, channels=1 or 3, height, width) or (channels, height, width)
+            - embed_dim, latent_dim: integer
+            
+        forward:
+            - x: (batch, channels=3, height, width)
         """
         # 
         self.sample = sample
+        if sample.dim() == 3:
+            self.sample = sample.unsqueeze(0)  # Now shape becomes (1, channels, height, width)
         
         # Encoder:
-        SAMPLE_CHANNEL = 3?
+        SAMPLE_CHANNEL = self.sample.size(1)
         FINIAL_ENCODER_CHANNEL = 32
         self.encoder = nn.Sequential(
             nn.Conv2d(SAMPLE_CHANNEL, 16, kernel_size=5, padding=2),
@@ -24,8 +30,7 @@ class SimpleVAE(nn.Module):
         )
         
         # Latent: projection # Q: how to convert into embed_dim?
-        
-        encoder_out_dim = FINIAL_ENCODER_CHANNEL * sample.size(2) * sample.size(3) # similar to: - * math.prod(sample.shape[2:])
+        encoder_out_dim = FINIAL_ENCODER_CHANNEL * self.sample.size(2) * self.sample.size(3) # similar to: - * math.prod(sample.shape[2:])
         self.proj_embed = nn.Linear(encoder_out_dim, embed_dim) 
         #print(f"encoder_out_dim: {encoder_out_dim}") # debug
         
@@ -34,7 +39,7 @@ class SimpleVAE(nn.Module):
         self.fc_logvar = nn.Linear(embed_dim, latent_dim)
         
         # Decoder # Q: how to change into the shape of self.sample 
-        decoder_out_dim = self.sample.numel() // sample.shape[0] 
+        decoder_out_dim = self.sample.numel() // self.sample.shape[0] 
         self.decoder = nn.Sequential(
             nn.Linear(latent_dim, embed_dim), 
             nn.ReLU(),
@@ -50,6 +55,8 @@ class SimpleVAE(nn.Module):
         return mu + eps * std
     
     def forward(self, x):
+        #
+        
         # Encoder
         x = self.encoder(x) # shape: (batch, channels, height, width)
         x = x.view(x.size(0), -1) # shape: (batch, hid_dim), same with nn.flatten()
@@ -79,11 +86,14 @@ class SimpleVAE(nn.Module):
         return x_dec, mu, logvar
 
 if __name__ == "__main__":
-    # requirement for model input: (batch, channels, height, width)
-    sample = torch.zeros(128, 3, 64, 12)
+    # requirement for model input: (channels, height, width) or (batch, channels, height, width)
+    sample1 = torch.zeros(1, 64, 12)
+    sample2 = torch.zeros(128, 1, 64, 12)
     
-    model = SimpleVAE(sample, embed_dim=512, latent_dim=128)
-    output, mu, logvar = model(sample)
+    model = SimpleVAE(sample1, embed_dim=512, latent_dim=128)
+    model = SimpleVAE(sample2, embed_dim=512, latent_dim=128)
+    #output, mu, logvar = model(sample1) # not allow
+    output, mu, logvar = model(sample2)
     
     # check for: sample.shape == output.shape
     print("Output shape:", output.shape)

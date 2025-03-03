@@ -1,4 +1,7 @@
 # WatermarkTools
+Usage:
+> ./run.sh
+
 To-dos:
 - () setup file structure (Ref: https://github.com/open-mmlab/mmdetection/tree/main)
 - () image-related pipeline: load image, add watermark algo, transform into tensor and shape

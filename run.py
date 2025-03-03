@@ -19,14 +19,12 @@ def run():
     ])
     
     # TBD: more dataset collections
-    train_set, eval_set = get_datasets(args=config, transfrom=transform)
+    train_set, eval_set = get_datasets(args=config, transform=transform)
 
     # TBD: more models collections & dynamic support for tensor shape
     sample = train_set.get_feat()
     model = get_models(args=config, sample=sample)
-    
     # TBD: Train / Evaluation for models + TBD: design for adding watermark into image
-    
 
 if __name__ == "__main__":
     run()

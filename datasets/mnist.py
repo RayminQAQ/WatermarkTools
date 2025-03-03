@@ -19,7 +19,8 @@ class mnist(Dataset):
         self.transform = transform  # Default: None
         
         # Load dataset, automatically saves the file into the default location if dataset_path is not provided.
-        if self.dataset_path is None:
+        
+        if self.dataset_path is None or self.dataset_path == "":
             # If no dataset path is specified, download and store MNIST in "./data"
             self.dataset = datasets.MNIST(root="./data", train=is_train, download=True)
         else:
@@ -45,6 +46,18 @@ class mnist(Dataset):
             image = self.transform(image)  # Apply transformations if provided
         return image
 
+    def get_feat(self):
+        """
+        Returns the image features.
+
+        Returns:
+            torch.tensor: A sample image after transformation (e.g., (1, 28, 28) for grayscale images).
+        """
+        sample_image, _ = self.dataset[0]  # Retrieve the first image
+        if self.transform:
+            sample_image = self.transform(sample_image)  # Apply transformation if provided
+        return sample_image  # Return the shape of the transformed image
+    
     def get_featdim(self):
         """
         Returns the dimensions of the image features.

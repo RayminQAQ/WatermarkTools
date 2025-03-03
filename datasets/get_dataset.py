@@ -22,7 +22,7 @@ def get_datasets(args, transfrom: transforms) -> tuple[Dataset, Dataset]:
     }
     
     train_set, eval_set = None, None # Initialize
-    train_set, eval_set = MODEL_DATASET_MAP[args.dataset].get_train_dataset, MODEL_DATASET_MAP[args.dataset].get_eval_dataset # Allow one dataset at a time 
+    train_set, eval_set = MODEL_DATASET_MAP[args.dataset].get_train_dataset(), MODEL_DATASET_MAP[args.dataset].get_eval_dataset() # Allow one dataset at a time 
     
     # Warning
     if args.dataset not in MODEL_DATASET_MAP:

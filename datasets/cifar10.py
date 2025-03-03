@@ -1,74 +1,85 @@
-# WatermarkTools/datasets/cifar10.py
-import torch
-from torch.utils.data import Dataset, random_split
-from torchvision import datasets, transforms
+from torch.utils.data import Dataset
+from torchvision import datasets
+import torchvision.transforms as transforms
 
-from WatermarkTools.config import args
+class cifar10(Dataset):
+    def __init__(self, dataset_path=None, transform=None, is_train=True):
+        """
+        Custom CIFAR-10 dataset wrapper.
 
-class CIFAR10Dataset(Dataset):
-    """封裝 torchvision CIFAR-10 數據集"""
-    def __init__(self, root, train=True, transform=None, download=False):
-        if transform is None:
-            transform = transforms.ToTensor()
-        self.dataset = datasets.CIFAR10(
-            root=root,
-            train=train,
-            transform=transform,
-            download=download
-        )
+        Args:
+            dataset_path (str or None): Path to the dataset directory. If None, it downloads automatically.
+            transform (callable or None): Transformations to apply to the images.
+            is_train (bool): Whether to load the training set (True) or test set (False).
+        """
+        super(cifar10, self).__init__()
+        
+        self.dataset_path = dataset_path  # Default: None
+        self.transform = transform  # Default: None
 
-    def __getitem__(self, index):
-        return self.dataset[index]
-
+        # Load CIFAR-10 dataset.
+        # 若 dataset_path 為 None 或空字串，則下載並存放在 "./data" 目錄下
+        if self.dataset_path is None or self.dataset_path == "":
+            self.dataset = datasets.CIFAR10(root="./data", train=is_train, download=True, transform=self.transform)
+        else:
+            self.dataset = datasets.CIFAR10(root=self.dataset_path, train=is_train, download=False, transform=self.transform)
+        
     def __len__(self):
+        """Returns the total number of samples in the dataset."""
         return len(self.dataset)
 
-class CIFAR10DataModule:
-    """
-    數據模組：根據 config.py 中的參數設定，決定 CIFAR-10 數據集的路徑與是否自動下載。
+    def __getitem__(self, index):
+        """
+        Retrieves a single image from the dataset.
+
+        Args:
+            index (int): Index of the image to retrieve.
+
+        Returns:
+            The transformed image.
+        """
+        image, _ = self.dataset[index]  # CIFAR-10 provides (image, label); 忽略 label
+        return image
+
+    def get_feat(self):
+        """
+        Returns a sample image after applying transformation.
+        """
+        sample_image, _ = self.dataset[0]
+        return sample_image
     
-    此模組除了提供訓練集與測試集外，也從訓練集中隨機分割出驗證集（eval set）。
-    """
-    def __init__(self):
-        # 如果 args.dataset_path 為 None，則自動下載到預設路徑
-        if args.dataset_path is None:
-            self.data_dir = './data'
-            self.download = True
-        else:
-            self.data_dir = args.dataset_path
-            self.download = False
+    def get_featdim(self):
+        """
+        Returns the shape of a sample image after transformation.
+        """
+        sample_image, _ = self.dataset[0]
+        return sample_image.shape
 
-        self.transform = transforms.ToTensor()
-        self.train_dataset = None
-        self.eval_dataset = None
-        self.test_dataset = None
+    
+class cifar10_interface:
+    def __init__(self, dataset_path=None, transform=None):
+        """
+        CIFAR-10 dataset interface to facilitate dataset loading.
 
-    def setup(self):
-        # 先載入整個訓練數據集
-        full_train_dataset = CIFAR10Dataset(
-            root=self.data_dir,
-            train=True,
-            transform=self.transform,
-            download=self.download
-        )
-        # 分割出 90% 作為訓練集，10% 作為驗證集
-        train_size = int(0.9 * len(full_train_dataset))
-        eval_size = len(full_train_dataset) - train_size
-        self.train_dataset, self.eval_dataset = random_split(full_train_dataset, [train_size, eval_size])
-        
-        # 初始化測試數據集
-        self.test_dataset = CIFAR10Dataset(
-            root=self.data_dir,
-            train=False,
-            transform=self.transform,
-            download=self.download
-        )
+        Args:
+            dataset_path (str or None): Path to the dataset directory. If None, it downloads automatically.
+            transform (callable or None): Transformations to apply to the images.
+        """
+        self.dataset_path = dataset_path if dataset_path is not None else None
+        self.transform = transform
+        if self.transform is None:
+            self.transform = transforms.Compose([
+                transforms.ToTensor()
+            ])
 
     def get_train_dataset(self):
-        return self.train_dataset
+        """
+        Returns the training dataset.
+        """
+        return cifar10(self.dataset_path, self.transform, is_train=True)
 
     def get_eval_dataset(self):
-        return self.eval_dataset
-
-    def get_test_dataset(self):
-        return self.test_dataset
+        """
+        Returns the evaluation (test) dataset.
+        """
+        return cifar10(self.dataset_path, self.transform, is_train=False)

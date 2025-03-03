@@ -21,11 +21,7 @@ def run():
     train_set, eval_set = get_datasets(args=config, transfrom=transform)
 
     # TBD: fix the bug of get_featdim()
-    sample = train_set.get_featdim() # BUG: AttributeError: 'function' object has no attribute 'get_featdim'
-    #sample = torch.zeros(128, 3, 64, 12) 
-    
-    print(type(sample), sample)
-    
+    sample = train_set.get_feat()
     model = get_models(args=config, sample=sample)
     
     # TBD: Train / Evaluation for models + TBD: design for adding watermark into image

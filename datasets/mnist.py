@@ -2,17 +2,6 @@ from torch.utils.data import Dataset
 from torchvision import datasets
 
 class mnist(Dataset):
-<<<<<<< Updated upstream
-    def __init__(self, root_dir: None, transform: None):
-        # Local variable
-        self.dataset = -1
-        self.root_dir = root_dir # default: None
-        self.transform = transform # default: None
-        
-        # Load dataset (TBD)
-        if self.root_dir is None:
-            self.dataset = ""
-=======
     def __init__(self, dataset_path=None, transform=None, is_train=True):
         """
         Custom MNIST dataset wrapper.
@@ -33,7 +22,6 @@ class mnist(Dataset):
         if self.dataset_path is None:
             # If no dataset path is specified, download and store MNIST in "./data"
             self.dataset = datasets.MNIST(root="./data", train=is_train, download=True)
->>>>>>> Stashed changes
         else:
             self.dataset = ""
         
